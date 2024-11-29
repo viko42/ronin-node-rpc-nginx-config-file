@@ -1,4 +1,4 @@
-# Ronin Node Reverse Proxy Configuration
+# Ronin network Node Reverse Proxy Configuration
 
 This nginx configuration file sets up a secure reverse proxy for a Ronin node, handling both HTTP (port 8545) and WebSocket (port 8546) connections. The setup includes SSL termination and Cloudflare integration for enhanced security.
 
