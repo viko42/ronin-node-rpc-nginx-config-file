@@ -18,6 +18,7 @@ map $http_upgrade $connection_upgrade {
 # Upstream configuration for Ronin node websocket port
 upstream ronin-proxy-ws {
     server 0.0.0.0:8546 weight=3 max_conns=250 max_fails=1000000 fail_timeout=30s;
+    keepalive 32;
 }
 
 # Upstream configuration for Ronin node HTTP port
@@ -67,8 +68,6 @@ server {
 
     # WebSocket endpoint configuration
     location /websocket/ {
-        internal;
-
         proxy_pass http://ronin-proxy-ws;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
@@ -77,6 +76,10 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 86400s;
+        proxy_connect_timeout 60s;
+        proxy_buffering off;
     }
 
     # Main location block handling both HTTP and WebSocket connections
